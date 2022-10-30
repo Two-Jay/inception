@@ -1,0 +1,11 @@
+FROM debian:buster
+
+RUN apt-get update \
+	&& apt-get upgrade -y \
+	&& apt-get install -y nginx
+
+CMD ["nginx", "-g", "daemon off;"]
+
+COPY ./srcs/default /etc/nginx/nginx.conf
+
+EXPOSE 443

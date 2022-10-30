@@ -1,0 +1,10 @@
+server {
+	listen 443 ssl;
+	listen [::]:443 ssl;
+
+	server_name jekim.42.fr;
+	ssl_certificate /etc/ssl/cert/nginx.crt;
+	ssl_certificate_key /etc/ssl/cert/nginx.key;
+
+	
+}
