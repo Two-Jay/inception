@@ -4,8 +4,8 @@ services:
     mariadb:
         container_name: mariadb
         build:
-          context: ./srcs/mariadb
-          dockerfile: dockerfile
+            context: ./mariadb
+            dockerfile: dockerfile
         image: debian:buster
         restart: always
         expose:
@@ -14,9 +14,9 @@ services:
             - intra
         tty: true
         env_file:
-            - ./srcs/.env
+            - ./.env
         volumes:
-            - db:/var/lib/mysql
+            - mariadb:/var/lib/mysql
         
     # nginx:
     #     container_name: nginx
@@ -41,9 +41,15 @@ networks:
         driver: bridge
 
 volumes:
-    db: 
-      name : db
-      driver_opts:
-        type: none 
-        device: $PWD/db
-        o: bind 
+    mariadb : 
+        name : mariadb
+        driver_opts:
+            type: none 
+            device: /home/${VM_LOGIN}/data/mariadb
+            o: bind
+    wordpress : 
+        name : wordpress
+        driver_opts:
+            type: none 
+            device: /home/${VM_LOGIN}/data/wordpress
+            o: bind 
