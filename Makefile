@@ -25,3 +25,5 @@ log db:
 
 ps :
 	docker-compose -f $(COMPOSE_DIR) ps
+
+re : prune up
