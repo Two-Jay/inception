@@ -1,0 +1,49 @@
+version: '3'
+
+services:
+    mariadb:
+        container_name: mariadb
+        build:
+          context: ./srcs/mariadb
+          dockerfile: dockerfile
+        image: debian:buster
+        restart: always
+        expose:
+            - 3306
+        networks:
+            - intra
+        tty: true
+        env_file:
+            - ./srcs/.env
+        volumes:
+            - db:/var/lib/mysql
+        
+    # nginx:
+    #     container_name: nginx
+    #     build:
+    #       context: ./srcs/nginx
+    #       dockerfile: dockerfile
+    #     image: debian:buster
+    #     restart: always
+    #     ports:
+    #         - "80:80"
+    #         - "443:443"
+    #     networks:
+    #         - intra
+    #     tty: true
+    #     env_file:
+    #         - ./srcs/.env
+    #     volumes:
+    #         - ./srcs/nginx/html:/var/www/html
+
+networks:
+    intra:
+        driver: bridge
+
+volumes:
+    db: 
+      name : db
+      driver_opts:
+        type: none 
+        device: $PWD/db
+        o: bind 

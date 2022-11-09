@@ -4,3 +4,8 @@ RUN apt-get update \
     && apt-get upgrade -y \
     && apt-get install -y mariadb-server
 
+COPY ./config/setup.sh /tmp/setup.sh
+
+EXPOSE 3306
+
+# ENTRYPOINT [ "sh", "/tmp/setup.sh" ]
