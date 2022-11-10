@@ -10,12 +10,12 @@ RUN apt-get update -y && apt-get upgrade -y \
         unzip
 
 RUN wget https://ko.wordpress.org/latest-ko_KR.zip
-RUN unzip latest-ko_KR.zip -d /var/www/
+RUN unzip -o latest-ko_KR.zip -d /var/www/
 RUN chown -R www-data:www-data /var/www/wordpress
 
 RUN rm -rf /var/www/wordpress/wp-config-sample.php
-COPY ./conf/wp-config.php /var/www/wordpress/
-COPY ./conf/www.conf /etc/php/7.3/fpm/pool.d/
+COPY ./config/wp-config.php /var/www/wordpress/
+COPY ./config/www.conf /etc/php/7.3/fpm/pool.d/
 RUN mkdir -p /run/php
 
 ENTRYPOINT ["php-fpm7.3", "-F", "-R"]
