@@ -8,8 +8,20 @@ RUN apt-get update \
 
 EXPOSE 9000
 
-COPY ./config/setup.sh /tmp/setup.sh
+RUN openssl genrsa -out server.key 4096
+RUN openssl req -new -key server.key -subj "/C=KR/ST=Seoul/O=42seoul/OU=gam/CN=inception" -out server.csr
+RUN openssl req -x509 -days 365 -in server.csr -key server.key -out server.crt
+
+RUN chmod 666 server.crt server.key
+
+RUN mkdir -p /etc/ssl/certs
+RUN mkdir -p /etc/ssl/private
+
+RUN mv server.crt /etc/ssl/certs
+RUN mv server.key /etc/ssl/private
+
+# COPY ./config/setup.sh /tmp/setup.sh
 COPY ./config/nginx.conf /etc/nginx/sites-available/default
 
-CMD ["sh", "/tmp/setup.sh"]
+# CMD ["sh", "/tmp/setup.sh"]
 ENTRYPOINT ["nginx", "-g", "daemon off;"]
