@@ -18,23 +18,42 @@ services:
         volumes:
             - mariadb:/var/lib/mysql
         
-    # nginx:
-    #     container_name: nginx
+    nginx:
+        container_name: nginx
+        build:
+          context: ./nginx
+          dockerfile: dockerfile
+        image: debian:buster
+        restart: always
+        expose :
+            - 9000
+        ports:
+            - 443:443
+        networks:
+            - intra
+        tty: true
+        env_file:
+            - ./.env
+        volumes:
+            - wordpress:/var/www/wordpress
+
+    # wordpress:
+    #     container_name: wordpress
     #     build:
-    #       context: ./srcs/nginx
+    #       context: ./wordpress
     #       dockerfile: dockerfile
     #     image: debian:buster
     #     restart: always
-    #     ports:
-    #         - "80:80"
-    #         - "443:443"
+    #     expose :
+    #         - 3306
+    #         - 9000
     #     networks:
     #         - intra
     #     tty: true
     #     env_file:
-    #         - ./srcs/.env
+    #         - ./.env
     #     volumes:
-    #         - ./srcs/nginx/html:/var/www/html
+    #         - wordpress:/var/www/wordpress
 
 networks:
     intra:

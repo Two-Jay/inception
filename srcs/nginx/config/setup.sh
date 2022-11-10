@@ -1,6 +1,12 @@
+#!/bin/bash
 
-# create a self-signed certificate
-openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/nginx-selfsigned.key -out /etc/ssl/certs/nginx-selfsigned.crt
+openssl genrsa -out server.key 4096
+openssl req -new -key server.key -subj "/C=KR/ST=Seoul/O=42seoul/OU=gam/CN=inception" -out server.csr
+openssl req -x509 -days 365 -in server.csr -key server.key -out server.crt
 
-# create a Diffie-Hellman group
-openssl dhparam -out /etc/ssl/certs/dhparam.pem 2048
+chmod 666 server.crt server.key
+
+mv server.crt /etc/ssl/certs
+mv server.key /etc/ssl/private
+
+nginx -g daemon off;

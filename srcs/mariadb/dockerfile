@@ -5,8 +5,9 @@ RUN apt-get update \
     && apt-get install -y mariadb-server
 
 COPY ./config/setup.sh /tmp/setup.sh
+# RUN bash /tmp/setup.sh
 
 EXPOSE 3306
 
-ENTRYPOINT ["sh", "/tmp/setup.sh"]
+# ENTRYPOINT ["exec", "mysqld"]
 
