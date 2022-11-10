@@ -8,13 +8,11 @@ services:
             dockerfile: dockerfile
         image: debian:buster
         restart: always
-        expose:
-            - 3306
         networks:
             - intra
         tty: true
         env_file:
-            - ./.env
+            - .env
         volumes:
             - mariadb:/var/lib/mysql
         
@@ -25,10 +23,26 @@ services:
           dockerfile: dockerfile
         image: debian:buster
         restart: always
-        expose :
-            - 9000
         ports:
             - 443:443
+        networks:
+            - intra
+        tty: true
+        env_file:
+            - .env
+        volumes:
+            - wordpress:/var/www/wordpress
+
+    wordpress:
+        container_name: wordpress
+        build:
+          context: ./wordpress
+          dockerfile: dockerfile
+        image: debian:buster
+        restart: always
+        expose :
+            - 3306
+            - 9000
         networks:
             - intra
         tty: true
@@ -36,24 +50,6 @@ services:
             - ./.env
         volumes:
             - wordpress:/var/www/wordpress
-
-    # wordpress:
-    #     container_name: wordpress
-    #     build:
-    #       context: ./wordpress
-    #       dockerfile: dockerfile
-    #     image: debian:buster
-    #     restart: always
-    #     expose :
-    #         - 3306
-    #         - 9000
-    #     networks:
-    #         - intra
-    #     tty: true
-    #     env_file:
-    #         - ./.env
-    #     volumes:
-    #         - wordpress:/var/www/wordpress
 
 networks:
     intra:
@@ -71,4 +67,4 @@ volumes:
         driver_opts:
             type: none 
             device: /home/${VM_LOGIN}/data/wordpress
-            o: bind 
+            o: bind

@@ -1,13 +1,11 @@
 FROM debian:buster
 
-RUN apt-get update \
+RUN apt-get update -y \
     && apt-get upgrade -y \
     && apt-get install -y mariadb-server
 
 COPY ./config/setup.sh /tmp/setup.sh
-# RUN bash /tmp/setup.sh
 
 EXPOSE 3306
 
-# ENTRYPOINT ["exec", "mysqld"]
-
+ENTRYPOINT ["sh", "/tmp/setup.sh"]

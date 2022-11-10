@@ -13,7 +13,7 @@ up :
 down :
 	docker-compose -f $(COMPOSE_DIR) down
 
-prune : down
+fclean : down
 	sudo rm -rf $(VOLUME_DIR)/mariadb
 	sudo rm -rf $(VOLUME_DIR)/wordpress
 
@@ -26,4 +26,7 @@ log db:
 ps :
 	docker-compose -f $(COMPOSE_DIR) ps
 
-re : prune up
+prune :
+	docker system prune -a
+
+re : fclean up
