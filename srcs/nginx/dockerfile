@@ -11,5 +11,5 @@ EXPOSE 9000
 COPY ./config/setup.sh /tmp/setup.sh
 COPY ./config/nginx.conf /etc/nginx/sites-available/default
 
-ENTRYPOINT ["bash", "/tmp/setup.sh"]
-
+CMD ["sh", "/tmp/setup.sh"]
+ENTRYPOINT ["nginx", "-g", "daemon off;"]

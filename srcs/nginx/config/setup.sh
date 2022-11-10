@@ -13,4 +13,3 @@ mkdir -p /etc/ssl/private;
 mv server.crt /etc/ssl/certs;
 mv server.key /etc/ssl/private;
 
-nginx -g daemon off;

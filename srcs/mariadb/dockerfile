@@ -8,4 +8,5 @@ COPY ./config/setup.sh /tmp/setup.sh
 
 EXPOSE 3306
 
-ENTRYPOINT ["sh", "/tmp/setup.sh"]
+CMD ["sh", "/tmp/setup.sh"]
+ENTRYPOINT ["exec", "mysqld"]
