@@ -6,6 +6,7 @@ COMPOSE_DIR=./srcs/docker-compose.yml
 CONTAINER_NAME_DB=mariadb
 CONTAINER_NAME_WORDPRESS=wordpress
 CONTAINER_NAME_NGINX=nginx
+CONTAINER_NAME_ADMINER=adminer
 
 all : up
 
@@ -45,6 +46,9 @@ sh-wp:
 sh-ng:
 	docker exec -it $(CONTAINER_NAME_NGINX) /bin/bash
 
+sh-ad:
+	docker exec -it $(CONTAINER_NAME_ADMINER) /bin/bash
+
 log-db:
 	docker logs --tail 50 --follow --timestamps $(CONTAINER_NAME_DB)
 
@@ -53,3 +57,6 @@ log-wp:
 
 log-ng:
 	docker logs --tail 50 --follow --timestamps $(CONTAINER_NAME_NGINX)
+
+log-ad:
+	docker logs --tail 50 --follow --timestamps $(CONTAINER_NAME_ADMINER)
