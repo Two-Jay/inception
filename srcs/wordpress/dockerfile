@@ -9,7 +9,7 @@ RUN apt-get update -y && apt-get upgrade -y \
         wget \
         unzip
 
-EXPOSE 3306 9000
+# EXPOSE 3306 9000
 
 RUN wget https://ko.wordpress.org/latest-ko_KR.zip
 RUN unzip -o latest-ko_KR.zip -d /var/www/

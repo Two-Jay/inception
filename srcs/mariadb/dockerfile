@@ -4,9 +4,9 @@ RUN apt-get update -y \
     && apt-get upgrade -y \
     && apt-get install -y mariadb-server
 
-COPY ./config/setup.sh /tmp/setup.sh
-
 EXPOSE 3306
 
+COPY ./config/my.cnf /etc/mysql/my.cnf
+COPY ./config/setup.sh /tmp/setup.sh
+
 CMD ["sh", "/tmp/setup.sh"]
-ENTRYPOINT ["exec", "mysqld"]
