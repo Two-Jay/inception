@@ -12,3 +12,5 @@ echo "env[MYSQL_PASSWORD] = \$MYSQL_PASSWORD" >> /etc/php/7.3/fpm/pool.d/www.con
 echo "listen = 9000" >> /etc/php/7.3/fpm/pool.d/www.conf
 
 mkdir -p /run/php/
+
+exec php-fpm7.3 -F

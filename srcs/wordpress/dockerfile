@@ -16,5 +16,4 @@ RUN tar -xzvf latest-ko_KR.zip
 
 COPY ./config/setup.sh /tmp/setup.sh
 
-CMD ["sh", "/tmp/setup.sh"]
-ENTRYPOINT ["php-fpm7.3", "-F"]
+ENTRYPOINT ["sh", "/tmp/setup.sh"]
