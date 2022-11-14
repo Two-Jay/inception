@@ -1,6 +1,6 @@
 include ./srcs/.env
 
-VOLUME_DIR=/home/$(VM_LOGIN)/data
+VOLUME_DIR=${HOME}/data
 COMPOSE_DIR=./srcs/docker-compose.yml
 
 CONTAINER_NAME_DB=mariadb
@@ -8,16 +8,13 @@ CONTAINER_NAME_WORDPRESS=wordpress
 CONTAINER_NAME_NGINX=nginx
 CONTAINER_NAME_ADMINER=adminer
 
-LOCALHOST_IP=127.0.0.1
-DOMAIN=$(VM_LOGIN).42.fr
-
 all : up
 
 up :
 	sudo date -s "$$(wget -qSO- --max-redirect=0 google.com 2>&1 | grep Date: | cut -d' ' -f5-8)Z"
-	sudo mkdir -p ${HOME}/data/wordpress ${HOME}/data/mariadb /etc/hosts
+	sudo mkdir -p ${HOME}/data/wordpress ${HOME}/data/mariadb
 	docker-compose -f $(COMPOSE_DIR) up --build -d --remove-orphans
-	sudo cp -rp ./srcs/nginx/config/hosts /etc/hosts
+	sudo cp -rp ./srcs/nginx/config/hosts /etc/
 	sudo chmod 777 /etc/hosts
 
 down :
@@ -31,6 +28,8 @@ fclean :
 	sudo docker stop $$(sudo docker ps -a -q)
 	sudo docker rm $$(sudo docker ps -a -q)
 	sudo docker rmi -f $$(sudo docker images -q)
+	sudo docker volume rm srcs_$(CONTAINER_NAME_DB)
+	sudo docker volume rm srcs_$(CONTAINER_NAME_WORDPRESS)
 	sudo docker system prune -f
 	sudo rm -rf ${HOME}/data /etc/hosts
 

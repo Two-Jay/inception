@@ -2,9 +2,6 @@
 #apt 업데이트
 sudo apt-get update -y && apt-get upgrade -y;
 
-#git, vim, make 설치
-sudo apt-get install git vim make;
-
 #도커 구버전 삭제
 sudo apt-get remove docker docker-engine docker.io containerd runc;
 #도커 & 컴포즈 설치 
