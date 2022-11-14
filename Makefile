@@ -8,21 +8,31 @@ CONTAINER_NAME_WORDPRESS=wordpress
 CONTAINER_NAME_NGINX=nginx
 CONTAINER_NAME_ADMINER=adminer
 
+LOCALHOST_IP=127.0.0.1
+DOMAIN=$(VM_LOGIN).42.fr
+
 all : up
 
 up :
-	sudo mkdir -p $(VOLUME_DIR)/mariadb
-	sudo mkdir -p $(VOLUME_DIR)/wordpress
-	sudo cp -rp ./srcs/hosts /etc/hosts
-	sudo chmod 777 /etc/hosts
+	sudo date -s "$$(wget -qSO- --max-redirect=0 google.com 2>&1 | grep Date: | cut -d' ' -f5-8)Z"
+	sudo mkdir -p ${HOME}/data/wordpress ${HOME}/data/mariadb /etc/hosts
 	docker-compose -f $(COMPOSE_DIR) up --build -d --remove-orphans
+	sudo cp -rp ./srcs/nginx/config/hosts /etc/hosts
+	sudo chmod 777 /etc/hosts
 
 down :
 	docker-compose -f $(COMPOSE_DIR) down
 
-fclean : down
+re : fclean all
+
+fclean :
 	sudo rm -rf $(VOLUME_DIR)/mariadb
 	sudo rm -rf $(VOLUME_DIR)/wordpress
+	sudo docker stop $$(sudo docker ps -a -q)
+	sudo docker rm $$(sudo docker ps -a -q)
+	sudo docker rmi -f $$(sudo docker images -q)
+	sudo docker system prune -f
+	sudo rm -rf ${HOME}/data /etc/hosts
 
 restart :
 	docker-compose -f $(COMPOSE_DIR) restart

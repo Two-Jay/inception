@@ -7,6 +7,7 @@ RUN apt-get update -y \
 EXPOSE 3306
 
 COPY ./config/my.cnf /etc/mysql/my.cnf
-COPY ./config/setup.sh /tmp/setup.sh
+COPY ./config/setup.sh /tmp/mariadb-setup.sh
+# COPY ./config/wp_dump.sql ./
 
-CMD ["sh", "/tmp/setup.sh"]
+CMD ["sh", "/tmp/mariadb-setup.sh"]

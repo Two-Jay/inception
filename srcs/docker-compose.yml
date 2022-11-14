@@ -1,21 +1,49 @@
 version: '3'
 
 services:
-    adminer:
-        image: debian:buster
+    nginx:
+        container_name: nginx
+        build:
+          context: ./nginx
+          dockerfile: dockerfile
+        image: nginx
+        depends_on:
+            - wordpress
         restart: always
         ports:
-            - 5333:5333
+            - "443:443"
+        networks:
+            - intra
+        tty: true
+        env_file:
+            - .env
+        volumes:
+            - wordpress:/var/www/
+
+    wordpress:
+        container_name: wordpress
+        build:
+          context: ./wordpress
+          dockerfile: dockerfile
+        image: wordpress
+        depends_on:
+            - mariadb
+        restart: always
+        networks:
+            - intra
+        tty: true
+        env_file:
+            - ./.env
+        volumes:
+            - wordpress:/var/www/
 
     mariadb:
         container_name: mariadb
         build:
             context: ./mariadb
             dockerfile: dockerfile
-        image: debian:buster
+        image: mariadb
         restart: always
-        expose :
-            - 3306
         networks:
             - intra
         tty: true
@@ -23,60 +51,18 @@ services:
             - .env
         volumes:
             - mariadb:/var/lib/mysql
-        
-    nginx:
-        container_name: nginx
-        build:
-          context: ./nginx
-          dockerfile: dockerfile
-        image: debian:buster
-        depends_on:
-            - wordpress
-        restart: always
-        ports:
-            - 443:443
-        networks:
-            - intra
-        tty: true
-        env_file:
-            - .env
-        volumes:
-            - wordpress:/var/www/wordpress
-
-    wordpress:
-        container_name: wordpress
-        build:
-          context: ./wordpress
-          dockerfile: dockerfile
-        image: debian:buster
-        depends_on:
-            - mariadb
-        restart: always
-        expose :
-            - 3306
-            - 9000
-        networks:
-            - intra
-        tty: true
-        env_file:
-            - ./.env
-        volumes:
-            - wordpress:/var/www/wordpress
 
 networks:
     intra:
-        driver: bridge
 
 volumes:
     mariadb : 
-        name : mariadb
         driver_opts:
-            type: none 
+            type: volume
             device: /home/${VM_LOGIN}/data/mariadb
             o: bind
     wordpress : 
-        name : wordpress
         driver_opts:
-            type: none 
+            type: volume 
             device: /home/${VM_LOGIN}/data/wordpress
             o: bind

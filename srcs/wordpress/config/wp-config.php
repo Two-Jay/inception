@@ -13,9 +13,9 @@
 
 
 /* MySQL settings */
-define( 'DB_NAME',     "$WORDPRESS_DB_NAME" );
-define( 'DB_USER',     "$WORDPRESS_ADMIN_USER" );
-define( 'DB_PASSWORD', "$WORDPRESS_ADMIN_PASSWORD" );
+define( 'DB_NAME',     getenv('WORDPRESS_DB_NAME') );
+define( 'DB_USER',     getenv('WORDPRESS_USER') );
+define( 'DB_PASSWORD', getenv('WORDPRESS_PASSWORD') );
 define( 'DB_HOST',     'localhost' );
 define( 'DB_CHARSET',  'utf8mb4' );
 

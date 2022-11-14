@@ -2,18 +2,18 @@ FROM debian:buster
 
 RUN apt-get update -y && apt-get upgrade -y \
     && apt-get install -y \
-        php7.3 \
+        php7.3-fpm \
         php-mysql \
-        php-fpm \
         mariadb-client \
         wget \
         tar
 
-# EXPOSE 3306 9000
+EXPOSE 9000
 
-RUN wget https://ko.wordpress.org/latest-ko_KR.zip
-RUN tar -xzvf latest-ko_KR.zip
+RUN		wget https://wordpress.org/latest.tar.gz
+RUN		tar xzvf latest.tar.gz
 
-COPY ./config/setup.sh /tmp/setup.sh
+COPY    ./config/wp-config.php /tmp/wp-config.php
+COPY    ./config/setup.sh    /tmp/wp-setup.sh
 
-ENTRYPOINT ["sh", "/tmp/setup.sh"]
+ENTRYPOINT ["sh", "/tmp/wp-setup.sh"]
